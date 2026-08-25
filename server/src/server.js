@@ -1,3 +1,4 @@
+```javascript
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -14,8 +15,6 @@ import { requireAdmin } from "./middleware/authMiddleware.js";
 dotenv.config();
 
 const app = express();
-
-const PORT = process.env.PORT || 5000;
 
 const CLIENT_URL =
   process.env.CLIENT_URL || "http://localhost:5173";
@@ -58,13 +57,45 @@ app.use(
   })
 );
 
+/* ================= DATABASE ================= */
+
+let isConnected = false;
+
+const connectDatabase = async () => {
+  if (isConnected) {
+    return;
+  }
+
+  if (!process.env.MONGODB_URI) {
+    throw new Error("MONGODB_URI is missing.");
+  }
+
+  await mongoose.connect(process.env.MONGODB_URI);
+
+  isConnected = true;
+
+  console.log("MongoDB connected successfully.");
+};
+
 /* ================= HEALTH CHECK ================= */
 
-app.get("/api/health", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Portfolio API is running.",
-  });
+app.get("/api/health", async (req, res) => {
+  try {
+    await connectDatabase();
+
+    res.status(200).json({
+      success: true,
+      message: "Portfolio API is running.",
+      database: "connected",
+    });
+  } catch (error) {
+    console.error("Health check error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Database connection failed.",
+    });
+  }
 });
 
 /* ================= CONTACT API ================= */
@@ -72,6 +103,14 @@ app.get("/api/health", (req, res) => {
 app.use(
   "/api/contact",
   contactLimiter,
+  async (req, res, next) => {
+    try {
+      await connectDatabase();
+      next();
+    } catch (error) {
+      next(error);
+    }
+  },
   contactRoutes
 );
 
@@ -79,6 +118,14 @@ app.use(
 
 app.use(
   "/api/auth",
+  async (req, res, next) => {
+    try {
+      await connectDatabase();
+      next();
+    } catch (error) {
+      next(error);
+    }
+  },
   authRoutes
 );
 
@@ -86,6 +133,14 @@ app.use(
 
 app.use(
   "/api/admin",
+  async (req, res, next) => {
+    try {
+      await connectDatabase();
+      next();
+    } catch (error) {
+      next(error);
+    }
+  },
   requireAdmin,
   adminRoutes
 );
@@ -110,55 +165,7 @@ app.use((error, req, res, next) => {
   });
 });
 
-/* ================= START SERVER ================= */
+/* ================= EXPORT ================= */
 
-const startServer = async () => {
-  try {
-    if (!process.env.MONGODB_URI) {
-      throw new Error(
-        "MONGODB_URI is missing from .env"
-      );
-    }
-
-    if (!process.env.JWT_SECRET) {
-      throw new Error(
-        "JWT_SECRET is missing from .env"
-      );
-    }
-
-    if (!process.env.ADMIN_EMAIL) {
-      throw new Error(
-        "ADMIN_EMAIL is missing from .env"
-      );
-    }
-
-    if (!process.env.ADMIN_PASSWORD) {
-      throw new Error(
-        "ADMIN_PASSWORD is missing from .env"
-      );
-    }
-
-    await mongoose.connect(
-      process.env.MONGODB_URI
-    );
-
-    console.log(
-      "MongoDB connected successfully."
-    );
-
-    app.listen(PORT, () => {
-      console.log(
-        `Server running at http://localhost:${PORT}`
-      );
-    });
-  } catch (error) {
-    console.error(
-      "Server startup failed:",
-      error.message
-    );
-
-    process.exit(1);
-  }
-};
-
-startServer();
+export default app;
+```
