@@ -1,4 +1,3 @@
-```javascript
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -165,7 +164,16 @@ app.use((error, req, res, next) => {
   });
 });
 
-/* ================= EXPORT ================= */
+/* ================= VERCEL EXPORT ================= */
+
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+
+  app.listen(PORT, () => {
+    console.log(
+      `Server running at http://localhost:${PORT}`
+    );
+  });
+}
 
 export default app;
-```
