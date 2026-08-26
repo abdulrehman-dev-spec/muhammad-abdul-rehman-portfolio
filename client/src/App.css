@@ -1469,3 +1469,211 @@ footer {
     width: 100%;
   }
 }
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+  .container {
+    width: min(92%, 1100px);
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .hero-content h1 {
+    font-size: clamp(42px, 8vw, 68px);
+  }
+
+  .code-card {
+    max-width: 650px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .about-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .project-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .navbar-inner {
+    min-height: 70px;
+  }
+
+  .brand-name {
+    font-size: 14px;
+  }
+
+  .brand-logo {
+    width: 38px;
+    height: 38px;
+  }
+
+  .navigation {
+    display: none;
+  }
+
+  .navigation.navigation-open {
+    display: flex;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+    background: var(--background, #ffffff);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+
+  .navigation.navigation-open button {
+    width: 100%;
+    padding: 14px;
+    text-align: left;
+  }
+
+  .menu-button {
+    display: flex;
+  }
+
+  .hero {
+    padding-top: 80px;
+  }
+
+  .hero-content h1 {
+    font-size: 44px;
+    line-height: 1.05;
+  }
+
+  .hero-content p {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .code-card {
+    font-size: 12px;
+    overflow-x: auto;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 75px 0;
+  }
+
+  .section-heading h2,
+  .about-grid h2,
+  .contact-grid h2 {
+    font-size: 38px;
+    line-height: 1.1;
+  }
+
+  .project-card {
+    grid-template-columns: 1fr;
+  }
+
+  .project-visual {
+    min-height: 300px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: min(90%, 1100px);
+  }
+
+  .brand-name {
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hero-content h1 {
+    font-size: 38px;
+  }
+
+  .section-heading h2,
+  .about-grid h2,
+  .contact-grid h2 {
+    font-size: 32px;
+  }
+
+  .code-content {
+    min-width: 520px;
+  }
+
+  .code-card {
+    overflow-x: auto;
+  }
+
+  .skills {
+    gap: 8px;
+  }
+
+  .skills span {
+    font-size: 12px;
+  }
+
+  .project-info {
+    padding: 25px;
+  }
+
+  .cta {
+    padding: 35px 25px;
+  }
+
+  .cta h2 {
+    font-size: 32px;
+  }
+}
