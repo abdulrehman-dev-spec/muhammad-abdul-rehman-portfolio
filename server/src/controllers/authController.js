@@ -17,23 +17,27 @@ export const loginAdmin = async (req, res) => {
     const jwtSecret = process.env.JWT_SECRET;
 
     if (!adminEmail || !adminPassword || !jwtSecret) {
+      console.error("Admin authentication environment variables are missing.");
+
       return res.status(500).json({
         success: false,
         message: "Admin authentication is not configured.",
       });
     }
 
-    if (email.trim().toLowerCase() !== adminEmail.toLowerCase()) {
+    const emailMatches =
+      email.trim().toLowerCase() ===
+      adminEmail.trim().toLowerCase();
+
+    if (!emailMatches) {
       return res.status(401).json({
         success: false,
         message: "Invalid email or password.",
       });
     }
 
-    const passwordMatches = await bcrypt.compare(
-      password,
-      await bcrypt.hash(adminPassword, 10)
-    );
+    const passwordMatches =
+      password === adminPassword;
 
     if (!passwordMatches) {
       return res.status(401).json({
