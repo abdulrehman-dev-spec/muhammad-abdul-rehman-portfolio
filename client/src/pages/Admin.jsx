@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:5000";
+const API_URL =
+  "https://muhammad-abdul-rehman-api.vercel.app";
 
 function Admin({ onLogout }) {
   const [contacts, setContacts] = useState([]);
@@ -67,6 +68,11 @@ function Admin({ onLogout }) {
     try {
       const token = getToken();
 
+      if (!token) {
+        onLogout();
+        return;
+      }
+
       const response = await fetch(
         `${API_URL}/api/admin/contacts/${id}/status`,
         {
@@ -129,6 +135,11 @@ function Admin({ onLogout }) {
     try {
       const token = getToken();
 
+      if (!token) {
+        onLogout();
+        return;
+      }
+
       const response = await fetch(
         `${API_URL}/api/admin/contacts/${id}`,
         {
@@ -184,8 +195,6 @@ function Admin({ onLogout }) {
     <div className="admin-page">
       <div className="admin-container">
 
-        {/* HEADER */}
-
         <header className="admin-header">
           <div>
             <p className="admin-label">
@@ -218,8 +227,6 @@ function Admin({ onLogout }) {
           </div>
         </header>
 
-        {/* STATS */}
-
         <section className="admin-stats">
 
           <div className="admin-stat">
@@ -239,12 +246,9 @@ function Admin({ onLogout }) {
 
         </section>
 
-        {/* CLIENT MESSAGES */}
-
         <section className="admin-content">
 
           <div className="admin-content-header">
-
             <div>
               <h2>
                 Client Messages
@@ -254,7 +258,6 @@ function Admin({ onLogout }) {
                 Recent inquiries from your portfolio.
               </p>
             </div>
-
           </div>
 
           {loading && (
@@ -331,7 +334,6 @@ function Admin({ onLogout }) {
                         </td>
 
                         <td>
-
                           <select
                             className="status-select"
                             value={contact.status}
@@ -358,11 +360,9 @@ function Admin({ onLogout }) {
                               Archived
                             </option>
                           </select>
-
                         </td>
 
                         <td>
-
                           <button
                             className="delete-button"
                             onClick={() =>
@@ -373,7 +373,6 @@ function Admin({ onLogout }) {
                           >
                             Delete
                           </button>
-
                         </td>
 
                       </tr>
